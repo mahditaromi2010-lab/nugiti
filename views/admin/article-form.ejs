@@ -1,0 +1,25 @@
+<%- include('../partials/header', {title}) %>
+<div class="admin-shell"><%- include('../partials/admin-nav') %><div class="admin-content">
+  <div class="admin-topbar"><div><span class="section-kicker">ARTICLE EDITOR</span><h1><%= article ? 'ویرایش مقاله' : 'مقاله جدید' %></h1><p>عنوان، محتوای مقاله و تصاویر را در همین بخش مدیریت کنید.</p></div><a href="/admin/articles" class="button button-outline button-small">بازگشت به مقالات</a></div>
+  <form class="admin-panel admin-form" action="<%= article ? `/admin/articles/${article.id}/edit` : '/admin/articles' %>" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="form-grid">
+      <div class="form-field form-span-2"><label for="title">عنوان مقاله *</label><input class="form-control" id="title" name="title" value="<%= article?.title || '' %>" required></div>
+      <div class="form-field"><label for="slug">نشانی کوتاه</label><input class="form-control" id="slug" name="slug" value="<%= article?.slug || '' %>" placeholder="در صورت خالی بودن خودکار ساخته می‌شود"></div>
+      <div class="form-field"><label for="category">دسته‌بندی</label><input class="form-control" id="category" name="category" value="<%= article?.category || 'مقالات تخصصی' %>"></div>
+      <div class="form-field form-span-2"><label for="excerpt">خلاصه / توضیح کوتاه</label><textarea class="form-control" id="excerpt" name="excerpt" rows="3" maxlength="600"><%= article?.excerpt || '' %></textarea></div>
+      <div class="form-field form-span-2"><label for="content">متن مقاله *</label><textarea class="form-control article-textarea" id="content" name="content" rows="18" required><%= article?.content || '' %></textarea><small>متن را در چند خط بنویسید. برای درج یک تصویر در محل دلخواه، کد آن را در یک خط جدا قرار دهید؛ مثال: [[image:12]]. HTML خام پذیرفته نمی‌شود.</small></div>
+      <div class="form-field"><label for="cover">تصویر شاخص مقاله</label><input class="form-control file-control" id="cover" type="file" name="cover" accept="image/jpeg,image/png,image/webp,image/gif"><small>حداکثر ۸ مگابایت.</small></div>
+      <div class="form-field"><label for="cover_url">یا نشانی تصویر شاخص</label><input class="form-control" id="cover_url" name="cover_url" value="<%= article?.cover_image || '' %>" placeholder="https://..."></div>
+      <div class="form-field form-span-2"><label for="inline_images">تصاویر داخل مقاله (حداکثر ۱۰ تصویر در هر بار)</label><input class="form-control file-control" id="inline_images" type="file" name="inline_images" accept="image/jpeg,image/png,image/webp,image/gif" multiple><small>هر تصویر حداکثر ۸ مگابایت است. پس از ذخیره، کد درج تصاویر پایین صفحه نمایش داده می‌شود.</small></div>
+      <div class="form-field form-span-2"><label for="inline_alt">متن جایگزین/شرح تصاویر جدید</label><input class="form-control" id="inline_alt" name="inline_alt" maxlength="180" placeholder="شرح کوتاه تصویر برای دسترس‌پذیری و سئو"></div>
+      <div class="form-field"><label for="status">وضعیت</label><select id="status" name="status" class="form-control"><option value="draft" <%= article?.status==='draft'?'selected':'' %>>پیش‌نویس</option><option value="published" <%= article?.status==='published'?'selected':'' %>>منتشرشده</option><option value="archived" <%= article?.status==='archived'?'selected':'' %>>آرشیو</option></select></div>
+    </div>
+    <div class="form-actions"><button class="button button-primary" type="submit">ذخیره مقاله</button><a href="/admin/articles" class="button button-outline">انصراف</a></div>
+  </form>
+  <% if (article && articleImages && articleImages.length) { %>
+    <section class="admin-panel article-image-manager"><div class="admin-panel-head"><div><span class="section-kicker">INLINE ARTICLE IMAGES</span><h2>تصاویر بارگذاری‌شده</h2><p>کد کنار هر تصویر را در خط دلخواه متن مقاله قرار دهید تا همان‌جا نمایش داده شود.</p></div></div>
+      <div class="article-image-list"><% articleImages.forEach(img => { %><div class="article-image-item"><img src="<%= img.image_path %>" alt="<%= img.alt_text %>"><div class="article-image-info"><b><%= img.alt_text || 'تصویر مقاله' %></b><code>[[image:<%= img.id %>]]</code><small>برای درج، کد بالا را در یک خط جدا از متن قرار دهید.</small></div><form action="/admin/article-images/<%= img.id %>/delete" method="post"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button type="submit" class="button-link danger-text" data-confirm="این تصویر از مقاله حذف شود؟">حذف تصویر</button></form></div><% }) %></div>
+    </section>
+  <% } %>
+</div></div><%- include('../partials/footer') %>

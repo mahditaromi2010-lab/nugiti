@@ -1,0 +1,25 @@
+{
+  "name": "Nogiti",
+  "short_name": "Nogiti",
+  "description": "ابزارهای مهندسی، آموزش تخصصی و منابع تأسیسات",
+  "lang": "fa-IR",
+  "dir": "rtl",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#071329",
+  "theme_color": "#071329",
+  "icons": [
+    {
+      "src": "/public/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/public/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

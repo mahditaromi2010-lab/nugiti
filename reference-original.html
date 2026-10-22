@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ماشین حساب تاسیسات | تأمین هوا و قطر لوله</title>
+    <!-- اضافه کردن فونت زیبای وزیرمتن برای ظاهر مدرن -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet"
+        type="text/css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .brand-bar {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: #fbbf24;
+            text-align: center;
+            padding: 1rem;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            margin-bottom: 2rem;
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f1f5f9;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .card.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-title {
+            font-size: 1.35rem;
+            color: #1e3a8a;
+            margin-bottom: 1.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #e2e8f0;
+            font-weight: 700;
+        }
+
+        .input-group {
+            margin-bottom: 1.4rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Vazirmatn', sans-serif;
+            background: #f8fafc;
+            transition: all 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            font-family: 'Vazirmatn', sans-serif;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1.2rem;
+            background: #f0fdf4;
+            border-radius: 12px;
+            border-right: 5px solid #22c55e;
+            font-size: 0.95rem;
+            line-height: 1.9;
+            color: #166534;
+            display: none;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.05);
+        }
+
+        .result.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .menu {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .menu-btn {
+            padding: 0.8rem 1.4rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            color: #334155;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+            width: auto;
+            margin: 0;
+        }
+
+        .menu-btn:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .menu-btn.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 1.2rem;
+            margin-top: 3rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            border-top: 1px solid #e2e8f0;
+            background: #ffffff;
+        }
+
+        .download-btn {
+            background: #22c55e !important;
+            border: 2px solid #22c55e !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2) !important;
+        }
+
+        .download-btn:hover {
+            background: #16a34a !important;
+            border-color: #16a34a !important;
+        }
+
+        .hamburger-btn {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            font-size: 1.8rem;
+            background: none;
+            border: none;
+            color: #fbbf24;
+            cursor: pointer;
+            z-index: 1002;
+            width: auto;
+            padding: 0;
+            margin: 0;
+            box-shadow: none;
+            line-height: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .hamburger-btn:hover {
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+            transition: all 0.3s;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-top: 80px;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 1.1rem 2rem;
+            text-decoration: none;
+            color: #334155;
+            font-weight: 600;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .sidebar a:hover {
+            background: #f8fafc;
+            color: #2563eb;
+            padding-right: 2.3rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .back-btn {
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            margin-bottom: 1.5rem;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            color: #334155;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: #334155;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #2563eb;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="brand-bar">
+        NUGAS
+        <button class="hamburger-btn" onclick="toggleSidebar(event)">☰</button>
+    </div>
+
+    <div class="header">
+        <h2>ماشین حساب تاسیسات</h2>
+        <p>محاسبه تأمین هوای احتراق و قطر لوله گاز فشار ضعیف (مبحث ۱۷)</p>
+    </div>
+
+    <div class="container">
+        <div id="homePage" class="page active">
+            <div class="menu">
+                <button class="menu-btn" onclick="navigateTo('mabhas')"> مبحث هفدهم مقررات ملی ساختمان</button>
+            </div>
+        </div>
+
+        <div id="mabhasPage" class="page">
+            <button class="back-btn" onclick="navigateTo('home')">← بازگشت</button>
+            <div class="menu">
+                <button class="menu-btn" onclick="showCard('pipe')">قطر لوله گاز (فشار 1/4 پوند بر اینچ مربع)</button>
+                <button class="menu-btn" onclick="showCard('highPressurePipe')">قطر لوله گاز (فشار 2 پوند بر اینچ
+                    مربع)</button>
+                <button class="menu-btn active" onclick="showCard('vent')"> تأمین هوا احتراق</button>
+                <button class="menu-btn" onclick="showCard('chimney')"> قطر دودکش</button>
+                <button class="menu-btn" onclick="showCard('meter')">مشخصات کنتور</button>
+                <button class="menu-btn" onclick="showCard('converter', event)">تبدیل سوخت</button>
+                <button class="menu-btn" onclick="showCard('download')">دانلود مبحث هفدهم</button>
+            </div>
+
+            <div id="vent" class="card active">
+                <div class="card-title">محاسبه تأمین هوای احتراق</div>
+                <div class="input-group"><label>مساحت فضا (m²):</label><input type="number" id="area"
+                        placeholder="مثلاً: 24" step="0.1" min="0.1"></div>
+                <div class="input-group"><label>ارتفاع فضا (m):</label><input type="number" id="height"
+                        placeholder="مثلاً: 2.8" step="0.1" min="0.1"></div>
+                <div class="input-group"><label>مصرف وسیله گازسوز (m³/h):</label><input type="number"
+                        id="deviceConsumption" placeholder="مثلاً: 0.7" step="0.1" min="0.1"></div>
+                <button onclick="calculateVentilation()">محاسبه</button>
+                <div id="ventResult" class="result"></div>
+            </div>
+
+            <div id="pipe" class="card">
+                <div class="card-title">محاسبه قطر لوله گاز (فشار 1/4 پوند بر اینچ مربع)(جدول 17-4-10)</div>
+                <div class="input-group"><label>طول لوله تا دورترین مصرف‌کننده (m):</label><input type="number"
+                        id="pipeLength" placeholder="مثلاً: 21" step="0.1" min="0.1"></div>
+                <div class="input-group"><label>مجموع مصرف گاز (m³/h):</label><input type="number" id="consumption"
+                        placeholder="مثلاً: 0.7" step="0.1" min="0.1"></div>
+                <button onclick="calculatePipeSize()">محاسبه قطر لوله</button>
+                <div id="pipeResult" class="result"></div>
+            </div>
+
+            <!-- کارت جدید: قطر لوله گاز (فشار قوی) - جدول پ-4-4 -->
+            <div id="highPressurePipe" class="card">
+                <div class="card-title">محاسبه قطر لوله گاز (فشار 2 پوند بر اینچ مربع)(جدول پ-4-4)</div>
+                <div class="input-group"><label>طول لوله تا دورترین مصرف‌کننده (m):</label><input type="number"
+                        id="hpPipeLength" placeholder="مثلاً: 30" step="0.1" min="0.1"></div>
+                <div class="input-group"><label>مجموع مصرف گاز (m³/h):</label><input type="number" id="hpConsumption"
+                        placeholder="مثلاً: 80" step="0.1" min="0.1"></div>
+                <button onclick="calculateHighPressurePipe()">محاسبه قطر لوله</button>
+                <div id="hpPipeResult" class="result"></div>
+            </div>
+
+            <div id="download" class="card">
+                <div class="card-title">دانلود مبحث هفدهم مقررات ملی ساختمان</div>
+                <p style="text-align: center; margin-bottom: 1.5rem; color: #475569;">ویرایش مورد نظر را برای دانلود
+                    انتخاب کنید:</p>
+                <a href="https://inbr.s3.ir-thr-at1.arvanstorage.ir/mabahse%2Fmabahse17%2Fmabhas17-watermark-1403-02.pdf?versionId="
+                    target="_blank" download
+                    style="display: block; background: #2563eb; color: white; text-align: center; padding: 1rem; margin: 0.8rem 0; border-radius: 12px; text-decoration: none; font-weight: 600; transition: background 0.3s;">📕
+                    دانلود ویرایش ۱۴۰۳</a>
+                <a href="https://inbr.s3.ir-thr-at1.arvanstorage.ir/mabahse%2Fmabahse17%2Fmabhas17-1401-07.pdf?versionId="
+                    target="_blank" download
+                    style="display: block; background: #2563eb; color: white; text-align: center; padding: 1rem; margin: 0.8rem 0; border-radius: 12px; text-decoration: none; font-weight: 600; transition: background 0.3s;">📘
+                    دانلود ویرایش ۱۴۰۱</a>
+            </div>
+
+            <div id="chimney" class="card">
+                <div class="card-title">محاسبه قطر دودکش (جدول 17-4-5)</div>
+                <div class="input-group"><label>ارتفاع دودکش (متر):</label><input type="number" id="chimneyHeight"
+                        placeholder="مقادیر جدول 0 الی 15" step="0.1" min="0.1"></div>
+                <div class="input-group"><label>طول لوله رابط (متر):</label><input type="number" id="chimneyLength"
+                        placeholder="مقادیر جدول (0 الی 9)" step="0.1" min="0"></div>
+                <div class="input-group"><label>مصرف دستگاه گازسوز (m³/h):</label><input type="number"
+                        id="chimneyConsumption" placeholder="مثال: 0.6" step="0.1" min="0.1"></div>
+                <button onclick="calculateChimney()">محاسبه قطر دودکش</button>
+                <div id="chimneyResult" class="result"></div>
+            </div>
+
+            <div id="converter" class="card">
+                <div class="card-title">تبدیل گاز طبیعی و سوخت مایع</div>
+                <div class="input-group">
+                    <label>نوع سوخت مایع:</label>
+                    <select id="fuelType">
+                        <option value="0.85">بنزین - liters/h</option>
+                        <option value="0.865">نفت سفید - liters/h</option>
+                        <option value="0.897">گازوئیل - liters/h</option>
+                        <option value="0.911">مازوت - liters/h</option>
+                        <option value="1.0">گاز مایع (LPG) - kg/h</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>گاز طبیعی (m³/h):</label><input type="number" id="gasInput"
+                        placeholder="مقدار گاز طبیعی" step="0.01" min="0" oninput="convertFromGas()"></div>
+                <div class="input-group"><label>مقدار سوخت مایع (<span id="liquidUnit">lit/h</span>):</label><input
+                        type="number" id="liquidInput" placeholder="مقدار سوخت مایع" step="0.01" min="0"
+                        oninput="convertFromLiquid()"></div>
+                <div id="converterInfo"
+                    style="text-align:center; font-size:0.9rem; color:#64748b; margin-top:1rem; background:#f8fafc; padding:0.8rem; border-radius:10px;">
+                    ضریب تبدیل: <span id="factorDisplay">0.85</span> (۱ لیتر = <span id="factorDisplay2">0.85</span> m³
+                    گاز طبیعی)
+                </div>
+            </div>
+
+            <div id="meter" class="card">
+                <div class="card-title">مشخصات کنتور</div>
+                <div class="input-group"><label>مصرف کل ساختمان (m³/h):</label><input type="number"
+                        id="meterConsumption" placeholder="مثلاً: 12.8" step="0.1" min="0.1"></div>
+                <button onclick="calculateMeter()">محاسبه</button>
+                <div id="meterResult" class="result"></div>
+            </div>
+        </div>
+
+        <div id="userPanelPage" class="page">
+            <div id="userPanelContent" class="card active"></div>
+        </div>
+
+        <div id="aboutPage" class="page">
+            <div class="card active">
+                <div class="card-title">درباره ما</div>
+                <p style="text-align: center; margin-bottom: 1.5rem; color: #475569;"><strong>NUGAS</strong> ارائه‌دهنده
+                    ابزارهای تخصصی محاسبات تأسیسات گاز طبیعی مطابق با <strong>مبحث ۱۷ مقررات ملی ساختمان</strong>
+                    می‌باشد.</p>
+                <p style="text-align: center; font-weight: 600; margin-bottom: 0.5rem; color: #1e3a8a;">جهت ارتباط با
+                    ما:</p>
+                <p style="text-align: center; color: #475569; line-height: 2;">
+                    📞 تلفن: <strong>09033998344</strong> (امامدادی طارمی)<br>
+                    📞 تلفن: <strong>09173982671</strong> (پروین)<br>
+                    📞 تلفن: <strong>09337895476</strong> (زارعی)<br>
+                    📧 ایمیل: <strong>nugasbnd@gmail.com</strong><br>
+                    📷 اینستاگرام: <strong>@nugas_bnd</strong>
+                </p>
+                <p style="text-align: center; font-size: 0.85rem; color: #94a3b8; margin-top: 1.5rem;">کلیه حقوق برای
+                    NUGAS محفوظ است. © ۱۴۰۲</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            Emamdadi Taromi 09033998344 <br>
+            Parvin 09173982671<br>
+            <span style="font-size: 0.8rem; color: #94a3b8; display: block; margin-top: 0.4rem;">کلیه حقوق برای NUGAS
+                محفوظ است. © ۱۴۰۲</span>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <a onclick="navigateTo('home')">خانه</a>
+        <a onclick="navigateTo('userpanel')">پنل کاربری</a>
+        <a onclick="navigateTo('shop')">فروشگاه</a>
+        <a onclick="navigateTo('document')">مقالات</a>
+        <a onclick="navigateTo('about')">درباره ما</a>
+    </div>
+
+    <script>
+        function showCard(id, evt) {
+            evt = evt || window.event;
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            if (evt && evt.target) evt.target.classList.add('active');
+        }
+
+        function calculateVentilation() {
+            const area = parseFloat(document.getElementById('area').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const cons = parseFloat(document.getElementById('deviceConsumption').value);
+            if (!area || !height || !cons || area <= 0 || height <= 0 || cons <= 0) {
+                alert('لطفاً مقادیر معتبر و مثبت وارد کنید.'); return;
+            }
+            const V = area * height, Q = cons * 9500, threshold = Q / 178, unconfined = (V > threshold);
+            let html = `<strong>🔹 مقادیر اولیه:</strong><br>
+                • حجم هوا (V): ${V.toFixed(2)} m³<br>
+                • ارزش حرارتی (Q): ${Q.toFixed(2)} kcal/h<br>
+                • وضعیت فضا: <strong>${unconfined ? 'نامحدود (Unconfined)' : 'محدود (Confined)'}</strong><br><br><strong>🔸 ابعاد و ظرفیت‌ها:</strong><br>`;
+            if (unconfined) html += `• ابعاد یک دریچه ثابت: ${(Q / 117).toFixed(2)} cm²<br>`;
+            html += `• ابعاد دو دریچه ثابت: ${(Q / 156).toFixed(2)} cm²<br>
+                • ابعاد یک کانال افقی: ${(Q / 78).toFixed(2)} cm²<br>
+                • ابعاد یک کانال قائم: ${(Q / 156).toFixed(2)} cm²<br>
+                • ظرفیت فن مکانیکی: ${(Q / 424).toFixed(2)} m³/h`;
+            document.getElementById('ventResult').innerHTML = html;
+            document.getElementById('ventResult').classList.add('show');
+        }
+
+        function calculatePipeSize() {
+            const length = parseFloat(document.getElementById('pipeLength').value);
+            const cons = parseFloat(document.getElementById('consumption').value);
+            if (!length || !cons || length <= 0 || cons <= 0) { alert('لطفاً مقادیر معتبر و مثبت وارد کنید.'); return; }
+            const table = {
+                2: { 5.9: '1/2"', 12.3: '3/4"', 23.3: '1"', 47.9: '1 1/4"', 72.0: '1 1/2"', 138.3: '2"', 220.0: '2 1/2"', 390.7: '3"', 801.9: '4"' },
+                4: { 4.0: '1/2"', 8.5: '3/4"', 16.0: '1"', 32.9: '1 1/4"', 49.4: '1 1/2"', 95.1: '2"', 151.2: '2 1/2"', 268.5: '3"', 551.1: '4"' },
+                6: { 3.2: '1/2"', 6.8: '3/4"', 12.9: '1"', 26.4: '1 1/4"', 39.7: '1 1/2"', 76.4: '2"', 121.5: '2 1/2"', 215.7: '3"', 442.8: '4"' },
+                8: { 2.8: '1/2"', 5.8: '3/4"', 11.0: '1"', 22.6: '1 1/4"', 34.0: '1 1/2"', 65.4: '2"', 104.0: '2 1/2"', 184.7: '3"', 379.1: '4"' },
+                10: { 2.4: '1/2"', 5.0: '3/4"', 9.6: '1"', 19.7: '1 1/4"', 29.6: '1 1/2"', 56.9: '2"', 90.4: '2 1/2"', 160.6: '3"', 329.7: '4"' },
+                15: { 2.0: '1/2"', 4.2: '3/4"', 7.9: '1"', 16.2: '1 1/4"', 24.3: '1 1/2"', 46.8: '2"', 74.4: '2 1/2"', 132.1: '3"', 271.2: '4"' },
+                20: { 1.7: '1/2"', 3.5: '3/4"', 6.7: '1"', 13.8: '1 1/4"', 20.7: '1 1/2"', 39.8: '2"', 63.3: '2 1/2"', 112.5: '3"', 231.0: '4"' },
+                25: { 1.5: '1/2"', 3.1: '3/4"', 5.9: '1"', 12.2: '1 1/4"', 18.3: '1 1/2"', 35.2: '2"', 56.0: '2 1/2"', 99.5: '3"', 204.3: '4"' },
+                30: { 1.3: '1/2"', 2.8: '3/4"', 5.3: '1"', 11.0: '1 1/4"', 16.6: '1 1/2"', 31.9: '2"', 50.8: '2 1/2"', 90.2: '3"', 185.1: '4"' },
+                40: { 1.1: '1/2"', 2.4: '3/4"', 4.6: '1"', 9.4: '1 1/4"', 14.1: '1 1/2"', 27.1: '2"', 43.3: '2 1/2"', 76.9: '3"', 157.9: '4"' },
+                50: { 1.0: '1/2"', 2.1: '3/4"', 4.1: '1"', 8.4: '1 1/4"', 12.6: '1 1/2"', 24.3: '2"', 38.6: '2 1/2"', 68.7: '3"', 141.0: '4"' },
+                55: { 0.99: '1/2"', 2.0: '3/4"', 3.9: '1"', 8.0: '1 1/4"', 12.0: '1 1/2"', 23.1: '2"', 36.7: '2 1/2"', 65.2: '3"', 133.9: '4"' },
+                60: { 0.94: '1/2"', 1.9: '3/4"', 3.7: '1"', 7.6: '1 1/4"', 11.5: '1 1/2"', 22.1: '2"', 35.1: '2 1/2"', 62.4: '3"', 128.1: '4"' },
+                70: { 0.85: '1/2"', 1.8: '3/4"', 3.3: '1"', 6.9: '1 1/4"', 10.4: '1 1/2"', 20.0: '2"', 31.8: '2 1/2"', 56.5: '3"', 116.1: '4"' },
+                80: { 0.8: '1/2"', 1.6: '3/4"', 3.1: '1"', 6.5: '1 1/4"', 9.7: '1 1/2"', 18.8: '2"', 29.8: '2 1/2"', 53.1: '3"', 108.9: '4"' },
+                90: { 0.75: '1/2"', 1.5: '3/4"', 2.9: '1"', 6.1: '1 1/4"', 9.1: '1 1/2"', 17.6: '2"', 28.0: '2 1/2"', 49.7: '3"', 102: '4"' },
+                100: { 0.71: '1/2"', 1.4: '3/4"', 2.8: '1"', 5.7: '1 1/4"', 8.6: '1 1/2"', 16.6: '2"', 26.4: '2 1/2"', 47.0: '3"', 96.5: '4"' },
+                120: { 0.64: '1/2"', 1.3: '3/4"', 2.5: '1"', 5.2: '1 1/4"', 7.8: '1 1/2"', 15.0: '2"', 23.9: '2 1/2"', 42.5: '3"', 87.3: '4"' },
+                150: { 0.57: '1/2"', 1.2: '3/4"', 2.2: '1"', 4.6: '1 1/4"', 6.9: '1 1/2"', 13.3: '2"', 21.2: '2 1/2"', 37.7: '3"', 77.5: '4"' },
+                200: { 0.49: '1/2"', 1.0: '3/4"', 1.9: '1"', 3.9: '1 1/4"', 5.9: '1 1/2"', 11.4: '2"', 18.1: '2 1/2"', 32.2: '3"', 66.2: '4"' },
+                250: { 0.43: '1/2"', 0.91: '3/4"', 1.7: '1"', 3.5: '1 1/4"', 5.2: '1 1/2"', 10.1: '2"', 16.1: '2 1/2"', 28.6: '3"', 58.8: '4"' },
+                300: { 0.39: '1/2"', 0.82: '3/4"', 1.5: '1"', 3.1: '1 1/4"', 4.7: '1 1/2"', 9.2: '2"', 14.6: '2 1/2"', 25.9: '3"', 53.2: '4"' }
+            };
+            const lengths = Object.keys(table).map(Number).sort((a, b) => a - b);
+            let selLength = lengths.find(l => l >= length) || lengths[lengths.length - 1];
+            const capMap = table[selLength];
+            const caps = Object.keys(capMap).map(Number).sort((a, b) => a - b);
+            let selCap = caps.find(c => c >= cons) || caps[caps.length - 1];
+            document.getElementById('pipeResult').innerHTML = `قطر لوله مورد نیاز: <strong>${capMap[selCap]}</strong><br>(بر اساس طول ${selLength} متر و ظرفیت ${selCap} m³/h)`;
+            document.getElementById('pipeResult').classList.add('show');
+        }
+
+        // ========== قطر لوله گاز (فشار قوی) - جدول پ-4-4 ==========
+        const hpTable = [
+            { length: 15, caps: [16, 30, 62, 93, 180, 276, 418, 725, 1657] },
+            { length: 20, caps: [11, 21, 43, 64, 124, 217, 375, 725, 1657] },
+            { length: 45, caps: [9, 17, 34, 52, 99, 175, 301, 620, 1657] },
+            { length: 60, caps: [8, 14, 30, 44, 85, 150, 258, 531, 1569] },
+            { length: 75, caps: [7, 13, 26, 39, 75, 132, 229, 470, 1390] },
+            { length: 90, caps: [6, 12, 24, 35, 68, 120, 207, 426, 1260] },
+            { length: 120, caps: [5, 10, 20, 30, 58, 103, 177, 365, 1078] },
+            { length: 150, caps: [4.6, 9, 18, 27, 52, 91, 157, 323, 956] },
+            { length: 200, caps: [4, 7, 15, 23, 44, 78, 134, 277, 818] },
+            { length: 250, caps: [3.5, 6.5, 13, 20, 39, 69, 119, 245, 725] },
+            { length: 300, caps: [3.2, 6, 12, 18.5, 36, 63, 108, 222, 657] },
+            { length: 350, caps: [2.9, 5.5, 11, 17, 33, 58, 99, 204, 606] },
+            { length: 400, caps: [2.7, 5.1, 10.5, 15.5, 31, 54, 92, 190, 562] },
+            { length: 450, caps: [2.5, 4.8, 10, 14.5, 29, 50, 87, 179, 527] },
+            { length: 500, caps: [2.4, 4.5, 9.5, 14, 27, 47, 82, 169, 498] },
+            { length: 550, caps: [2.3, 4.3, 9, 13.5, 26, 45, 78, 160, 473] },
+            { length: 600, caps: [2.2, 4.1, 8, 13, 25, 43, 74, 153, 451] }
+        ];
+        const hpDiameters = ['¾"', '1"', '1¼"', '1½"', '2"', '2½"', '3"', '4"', '6"'];
+
+        function calculateHighPressurePipe() {
+            const length = parseFloat(document.getElementById('hpPipeLength').value);
+            const cons = parseFloat(document.getElementById('hpConsumption').value);
+            const res = document.getElementById('hpPipeResult');
+
+            if (!length || !cons || length <= 0 || cons <= 0) {
+                alert('لطفاً مقادیر معتبر و مثبت وارد کنید.');
+                return;
+            }
+
+            let selRow;
+            if (length <= 15) {
+                selRow = hpTable[0];
+            } else {
+                selRow = hpTable.find(r => r.length >= length);
+                if (!selRow) {
+                    res.innerHTML = `⚠️ طول لوله (${length} متر) از حداکثر طول جدول (۶۰۰ متر) بیشتر است.`;
+                    res.classList.add('show');
+                    return;
+                }
+            }
+
+            let selDiameter = null;
+            let selCapacity = null;
+            for (let i = 0; i < selRow.caps.length; i++) {
+                if (selRow.caps[i] >= cons) {
+                    selDiameter = hpDiameters[i];
+                    selCapacity = selRow.caps[i];
+                    break;
+                }
+            }
+
+            if (selDiameter === null) {
+                const maxCap = selRow.caps[selRow.caps.length - 1];
+                res.innerHTML = `❌ مصرف وارد شده (${cons} m³/h) بیشتر از حداکثر ظرفیت مجاز جدول (${maxCap} m³/h) برای طول ${selRow.length} متر می‌باشد.`;
+                res.classList.add('show');
+                return;
+            }
+
+            res.innerHTML = `
+                ✅ قطر لوله مورد نیاز: <strong>${selDiameter}</strong><br>
+                <small>(بر اساس طول ${selRow.length} متر و ظرفیت ${selCapacity} m³/h)</small>
+            `;
+            res.classList.add('show');
+        }
+
+        // ========== جدول دقیق 17-4-5 (قطر دودکش) ==========
+        const chimneyTable = [
+            { height: 3, length: 0, capacities: [21.20, 51.00, 93.90, 153.00, 230.30] },
+            { height: 3, length: 0.6, capacities: [16.90, 42.40, 78.50, 127.50, 191.90] },
+            { height: 3, length: 1.5, capacities: [15.40, 38.60, 72.95, 121.20, 182.80] },
+            { height: 4.5, length: 0, capacities: [23.00, 56.30, 106.10, 172.70, 262.60] },
+            { height: 4.5, length: 0.6, capacities: [18.20, 47.00, 88.40, 143.90, 218.40] },
+            { height: 4.5, length: 1.5, capacities: [16.91, 42.90, 82.10, 136.40, 208.30] },
+            { height: 4.5, length: 3, capacities: [14.60, 39.90, 77.80, 129.80, 200.75] },
+            { height: 6, length: 0, capacities: [25.50, 63.60, 118.70, 194.40, 300.50] },
+            { height: 6, length: 0.6, capacities: [20.20, 53.00, 100.00, 161.90, 250.00] },
+            { height: 6, length: 1.5, capacities: [18.70, 48.50, 91.90, 154.00, 238.60] },
+            { height: 6, length: 3, capacities: [16.40, 44.90, 87.10, 144.20, 229.80] },
+            { height: 6, length: 4.5, capacities: [13.90, 41.20, 82.30, 138.90, 219.70] },
+            { height: 9, length: 0, capacities: [27.30, 69.70, 133.60, 221.70, 340.60] },
+            { height: 9, length: 0.6, capacities: [21.20, 58.10, 111.40, 184.30, 287.90] },
+            { height: 9, length: 1.5, capacities: [19.70, 53.00, 103.50, 175.25, 272.70] },
+            { height: 9, length: 3, capacities: [17.17, 49.50, 98.00, 165.65, 265.15] },
+            { height: 9, length: 4.5, capacities: [null, 44.70, 92.40, 157.80, 252.50] },
+            { height: 9, length: 6, capacities: [null, 41.20, 86.90, 150.50, 242.40] },
+            { height: 15, length: 0, capacities: [30.30, 78.30, 149.00, 247.50, 391.40] },
+            { height: 15, length: 0.6, capacities: [24.00, 65.65, 124.20, 207.10, 325.75] },
+            { height: 15, length: 1.5, capacities: [null, 59.10, 119.70, 197.00, 310.60] },
+            { height: 15, length: 3, capacities: [null, 55.80, 115.15, 184.30, 300.50] },
+            { height: 15, length: 4.5, capacities: [null, 50.50, 102.80, 178.00, 285.35] },
+            { height: 15, length: 6, capacities: [null, 47.00, 97.00, 169.20, 272.70] },
+            { height: 15, length: 9, capacities: [null, null, 83.30, 152.80, 255.10] }
+        ];
+
+        const chimneyDiameters = ["10 سانتی‌متر", "15 سانتی‌متر", "20 سانتی‌متر", "25 سانتی‌متر", "30 سانتی‌متر"];
+
+        function calculateChimney() {
+            const height = parseFloat(document.getElementById('chimneyHeight').value);
+            const length = parseFloat(document.getElementById('chimneyLength').value);
+            const cons = parseFloat(document.getElementById('chimneyConsumption').value);
+
+            if (!height || !cons || height <= 0 || cons <= 0 || length < 0) {
+                alert('لطفاً مقادیر معتبر وارد کنید (ارتفاع و مصرف مثبت، طول می‌تواند صفر باشد).');
+                return;
+            }
+
+            const requiredCapacity = cons * 9.5;
+
+            const heights = [...new Set(chimneyTable.map(r => r.height))].sort((a, b) => a - b);
+            if (height > heights[heights.length - 1]) {
+                document.getElementById('chimneyResult').innerHTML = `⚠️ ارتفاع وارد شده از حداکثر مجاز (${heights[heights.length - 1]} متر) بیشتر است.`;
+                document.getElementById('chimneyResult').classList.add('show');
+                return;
+            }
+            let selHeight = heights.find(h => h >= height);
+            if (!selHeight) selHeight = heights[heights.length - 1];
+
+            const rows = chimneyTable.filter(r => r.height === selHeight);
+            const lengths = [...new Set(rows.map(r => r.length))].sort((a, b) => a - b);
+            let selLength = lengths.find(l => l >= length);
+
+            if (selLength === undefined) {
+                document.getElementById('chimneyResult').innerHTML = `⚠️ طول لوله ${length} متر برای دودکش با ارتفاع ${selHeight} متر غیرمجاز است. لطفاً طول کوتاه‌تری وارد کنید (حداکثر: ${lengths[lengths.length - 1]} متر).`;
+                document.getElementById('chimneyResult').classList.add('show');
+                return;
+            }
+
+            const row = rows.find(r => r.length === selLength);
+
+            let selectedDiameter = null;
+            for (let i = 0; i < row.capacities.length; i++) {
+                if (row.capacities[i] !== null && row.capacities[i] >= requiredCapacity) {
+                    selectedDiameter = chimneyDiameters[i];
+                    break;
+                }
+            }
+
+            const res = document.getElementById('chimneyResult');
+            if (selectedDiameter) {
+                res.innerHTML = `
+                    ✅ قطر دودکش مورد نیاز: <strong>${selectedDiameter}</strong><br>
+                    <small>(ارتفاع دودکش: ${selHeight} متر | طول لوله رابط: ${selLength} متر | ظرفیت محاسبه‌شده: ${requiredCapacity.toFixed(1)} هزار kcal/h)</small>
+                `;
+            } else {
+                let suggestion = '';
+                const shorterLengths = lengths.filter(l => l < selLength).reverse();
+                for (let len of shorterLengths) {
+                    const checkRow = rows.find(r => r.length === len);
+                    if (checkRow && checkRow.capacities.some(cap => cap !== null && cap >= requiredCapacity)) {
+                        suggestion = ` پیشنهاد می‌شود لوله رابط ${len} متری یا کوتاه‌تر را امتحان کنید.`;
+                        break;
+                    }
+                }
+                if (!suggestion) suggestion = ' لطفاً مصرف دستگاه را کاهش دهید.';
+                res.innerHTML = `❌ با ارتفاع ${selHeight} متر و طول لوله ${selLength} متر، هیچ قطری جوابگو نیست. این ترکیب مجاز نمی‌باشد.${suggestion}`;
+            }
+            res.classList.add('show');
+        }
+
+        const fuelSelect = document.getElementById('fuelType');
+        const gasInput = document.getElementById('gasInput');
+        const liquidInput = document.getElementById('liquidInput');
+        function updateFactorDisplay() {
+            const f = parseFloat(fuelSelect.value);
+            document.getElementById('factorDisplay').textContent = f;
+            document.getElementById('factorDisplay2').textContent = f;
+            document.getElementById('liquidUnit').textContent = fuelSelect.value === '1.0' ? 'kg/h' : 'lit/h';
+        }
+        fuelSelect.addEventListener('change', () => {
+            updateFactorDisplay();
+            if (gasInput.value !== '') convertFromGas();
+            else if (liquidInput.value !== '') convertFromLiquid();
+        });
+        function convertFromGas() {
+            const g = parseFloat(gasInput.value);
+            if (isNaN(g) || g < 0) { liquidInput.value = ''; return; }
+            liquidInput.value = (g / parseFloat(fuelSelect.value)).toFixed(2);
+        }
+        function convertFromLiquid() {
+            const l = parseFloat(liquidInput.value);
+            if (isNaN(l) || l < 0) { gasInput.value = ''; return; }
+            gasInput.value = (l * parseFloat(fuelSelect.value)).toFixed(2);
+        }
+        updateFactorDisplay();
+
+        function calculateMeter() {
+            const c = parseFloat(document.getElementById('meterConsumption').value);
+            const res = document.getElementById('meterResult');
+            if (isNaN(c) || c <= 0) { res.innerHTML = 'لطفاً یک مصرف معتبر وارد کنید.'; res.classList.add('show'); return; }
+
+            let meter, wall, length, diam;
+            if (c >= 0.1 && c <= 6) {
+                meter = 'G4'; wall = '10 cm'; length = '15.5 cm'; diam = '1"';
+            } else if (c >= 6.1 && c <= 10) {
+                meter = 'G6'; wall = '10 cm'; length = '22.5 cm'; diam = '1"';
+            } else if (c >= 10.1 && c <= 16) {
+                meter = 'G10'; wall = '15 cm'; length = '28 cm'; diam = '1½"';
+            } else if (c >= 16.1 && c <= 25) {
+                meter = 'G16'; wall = '15 cm'; length = '28 cm'; diam = '1½"';
+            } else if (c >= 25.1 && c <= 40) {
+                meter = 'G25'; wall = '25 cm'; length = '33.5 cm'; diam = '2"';
+            } else if (c >= 40.1 && c <= 65) {
+                meter = 'G40'; wall = '30 cm'; length = '68 cm'; diam = '2"';
+            } else if (c >= 65.1 && c <= 100) {
+                meter = 'G65'; wall = '30 cm'; length = '68 cm'; diam = '2"';
+            } else {
+                res.innerHTML = '⚠️ مصرف باید بین ۰.۱ تا ۱۰۰ مترمکعب بر ساعت باشد.';
+                res.classList.add('show'); return;
+            }
+
+            res.innerHTML = `
+                <strong>رده کنتور:</strong> ${meter}<br>
+                <strong>فاصله کنتور از دیوار:</strong> ${wall}<br>
+                <strong>طول جانشین کنتور:</strong> ${length}<br>
+                <strong>قطر لوله جانشین کنتور:</strong> ${diam}<br>
+                <strong>ارتفاع کنتور:</strong> 180 cm الی 220 cm
+            `;
+            res.classList.add('show');
+        }
+
+        function toggleSidebar(event) {
+            if (event) event.stopPropagation();
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+
+        function navigateTo(page) {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            if (page === 'home') document.getElementById('homePage').classList.add('active');
+            else if (page === 'mabhas') {
+                document.getElementById('mabhasPage').classList.add('active');
+                if (!document.getElementById('vent').classList.contains('active')) showCard('vent');
+            }
+            else if (page === 'userpanel') { document.getElementById('userPanelPage').classList.add('active'); renderUserPanel(); }
+            else if (page === 'about') document.getElementById('aboutPage').classList.add('active');
+        }
+
+        const CURRENT_USER_KEY = 'nugas_current_user';
+        function getSavedUser() { const s = localStorage.getItem(CURRENT_USER_KEY); return s ? JSON.parse(s) : null; }
+        function saveUser(user) { localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user)); }
+        function logout() { localStorage.removeItem(CURRENT_USER_KEY); renderUserPanel(); updateSidebarUser(); }
+
+        const branchesList = ['نظارت', 'طراحی', 'اجرا'];
+        const fieldsList = ['مهندسی مکانیک', 'مهندسی برق', 'مهندسی عمران', 'مهندسی معماری'];
+
+        function renderUserPanel() {
+            const container = document.getElementById('userPanelContent');
+            const user = getSavedUser();
+            if (user) {
+                let html = `<div class="card-title">👤 پنل کاربری</div>
+                    <p style="text-align:center; margin-bottom:0.5rem;">خوش آمدید، <strong>${user.firstName} ${user.lastName}</strong></p>
+                    <p style="text-align:center; color:#64748b; margin-bottom:1rem;">شماره تماس: ${user.phone}</p>`;
+                const branches = user.branches || [];
+                const fields = user.fields || [];
+                html += `<p style="text-align:center; margin-bottom:0.5rem;">شاخه فعالیت: ${branches.length ? branches.join('، ') : 'تعیین نشده'}</p>`;
+                html += `<p style="text-align:center; margin-bottom:1.5rem;">رشته فعالیت: ${fields.length ? fields.join('، ') : 'تعیین نشده'}</p>`;
+                html += `<button onclick="toggleEditForm()">✏️ ویرایش مشخصات</button>`;
+                html += `<div id="editForm" style="display:none; margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid #e2e8f0;">
+                    <div class="input-group"><label>نام:</label><input type="text" id="editFirstName" value="${user.firstName}"></div>
+                    <div class="input-group"><label>نام خانوادگی:</label><input type="text" id="editLastName" value="${user.lastName}"></div>
+                    <div class="input-group"><label>شماره تماس:</label><input type="tel" id="editPhone" value="${user.phone}"></div>
+                    <div class="input-group"><label>شاخه فعالیت:</label><div class="checkbox-group">`;
+                branchesList.forEach(b => {
+                    html += `<label><input type="checkbox" value="${b}" ${branches.includes(b) ? 'checked' : ''}> ${b}</label>`;
+                });
+                html += `</div></div><div class="input-group"><label>رشته فعالیت:</label><div class="checkbox-group">`;
+                fieldsList.forEach(f => {
+                    html += `<label><input type="checkbox" value="${f}" ${fields.includes(f) ? 'checked' : ''}> ${f}</label>`;
+                });
+                html += `</div></div>
+                    <button onclick="saveProfile()" style="margin-top:1rem;">💾 ذخیره تغییرات</button>
+                    <button onclick="cancelEdit()" style="background:#64748b; margin-top:0.5rem;">انصراف</button>
+                </div>`;
+                html += `<button onclick="logout()" style="background:#ef4444; margin-top:1rem;">🚪 خروج از حساب</button>`;
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = `
+                    <div class="card-title">👤 ورود / ثبت‌نام</div>
+                    <div class="input-group"><label>نام:</label><input type="text" id="firstNameInput" placeholder="نام خود را وارد کنید"></div>
+                    <div class="input-group"><label>نام خانوادگی:</label><input type="text" id="lastNameInput" placeholder="نام خانوادگی خود را وارد کنید"></div>
+                    <div class="input-group"><label>شماره تماس:</label><input type="tel" id="phoneInput" placeholder="09xxxxxxxxx"></div>
+                    <button onclick="requestVerification()">📞 دریافت کد تأیید</button>
+                    <div id="verificationSection" style="display:none; margin-top:1.5rem;">
+                        <div class="input-group"><label>کد تأیید (۴ رقمی):</label><input type="text" id="codeInput" placeholder="کد دریافتی" maxlength="4"></div>
+                        <button onclick="verifyCode()">✅ تأیید و ورود</button>
+                    </div>
+                    <p id="codeHint" style="text-align:center; color:#16a34a; margin-top:1rem; font-weight:600; display:none;"></p>
+                `;
+            }
+        }
+
+        function toggleEditForm() {
+            const form = document.getElementById('editForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+        function cancelEdit() {
+            document.getElementById('editForm').style.display = 'none';
+        }
+        function saveProfile() {
+            const user = getSavedUser();
+            if (!user) return;
+            user.firstName = document.getElementById('editFirstName').value.trim();
+            user.lastName = document.getElementById('editLastName').value.trim();
+            user.phone = document.getElementById('editPhone').value.trim();
+            if (!user.firstName || !user.lastName || !user.phone) { alert('نام، نام خانوادگی و تلفن نمی‌تواند خالی باشد.'); return; }
+            const allChecks = document.querySelectorAll('#editForm input[type=checkbox]');
+            const selectedBranches = [];
+            const selectedFields = [];
+            allChecks.forEach(cb => {
+                if (cb.checked) {
+                    if (branchesList.includes(cb.value)) selectedBranches.push(cb.value);
+                    if (fieldsList.includes(cb.value)) selectedFields.push(cb.value);
+                }
+            });
+            user.branches = selectedBranches;
+            user.fields = selectedFields;
+            saveUser(user);
+            renderUserPanel();
+            updateSidebarUser();
+        }
+
+        let generatedCode = '';
+        function requestVerification() {
+            const fn = document.getElementById('firstNameInput').value.trim();
+            const ln = document.getElementById('lastNameInput').value.trim();
+            const ph = document.getElementById('phoneInput').value.trim();
+            if (!fn || !ln || !ph) { alert('لطفاً نام، نام خانوادگی و شماره تماس را وارد کنید.'); return; }
+            if (!/^09\d{9}$/.test(ph)) { alert('شماره تماس باید ۱۱ رقم و با ۰۹ شروع شود.'); return; }
+            generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
+            document.getElementById('verificationSection').style.display = 'block';
+            document.getElementById('codeHint').textContent = `کد تأیید (شبیه‌سازی): ${generatedCode}`;
+            document.getElementById('codeHint').style.display = 'block';
+        }
+        function verifyCode() {
+            if (document.getElementById('codeInput').value.trim() !== generatedCode) { alert('کد نادرست است.'); return; }
+            const user = {
+                firstName: document.getElementById('firstNameInput').value.trim(),
+                lastName: document.getElementById('lastNameInput').value.trim(),
+                phone: document.getElementById('phoneInput').value.trim(),
+                branches: [],
+                fields: []
+            };
+            saveUser(user);
+            renderUserPanel();
+            updateSidebarUser();
+        }
+        function updateSidebarUser() {
+            const sidebar = document.getElementById('sidebar');
+            const old = document.getElementById('sidebarUserInfo');
+            if (old) old.remove();
+            const user = getSavedUser();
+            if (user) {
+                const div = document.createElement('div');
+                div.id = 'sidebarUserInfo';
+                div.style.cssText = 'padding:1.2rem 2rem; border-top:1px solid #f1f5f9; margin-top:0.5rem; font-weight:600; color:#1e3a8a; font-size:0.95rem;';
+                div.innerHTML = `👤 ${user.firstName} ${user.lastName}`;
+                sidebar.appendChild(div);
+            }
+        }
+        renderUserPanel();
+        updateSidebarUser();
+    </script>
+</body>
+
+</html>

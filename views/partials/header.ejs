@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071329">
+  <!-- Nogiti site icons -->
+  <link rel="icon" href="/public/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="/public/apple-touch-icon.png">
+  <link rel="manifest" href="/public/site.webmanifest">
+  <meta name="description" content="Nogiti؛ ابزارهای مهندسی تأسیسات، آموزش تخصصی، دوره‌های کاربردی و افزونه‌های اتوکد.">
+  <title><%= title ? `${title} | ${siteName}` : `${siteName} | ابزارهای مهندسی و آموزش تأسیسات` %></title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+  <link rel="stylesheet" href="/public/css/styles.css">
+  <script defer src="/public/js/main.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-shell">
+    <a class="brand" href="/" aria-label="<%= siteName %> - صفحه اصلی"><span class="brand-mark"><img src="/public/images/nogiti-logo.webp" alt="" width="48" height="48" decoding="async"></span><span><strong><%= siteName %></strong><small><%= siteTagline %></small></span></a>
+    <button class="mobile-toggle" aria-label="باز کردن منو" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
+    <nav class="main-nav" data-nav>
+      <a href="/tools">ابزارهای مهندسی</a>
+      <a href="/shop">فروشگاه</a>
+      <a href="/articles">مقالات</a>
+      <a href="/about">درباره ما</a>
+      <% if (currentUser && currentUser.role === 'admin') { %><a href="/admin" class="nav-admin">مدیریت</a><% } %>
+    </nav>
+    <div class="nav-actions">
+      <% if (currentUser) { %>
+        <a class="user-chip" href="/account"><span class="avatar-mini"><%= (currentUser.first_name || currentUser.phone).slice(0,1) %></span><span><%= currentUser.first_name || 'حساب من' %></span></a>
+        <form action="/logout" method="post" class="inline-form"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="button button-quiet button-small" type="submit">خروج</button></form>
+      <% } else { %>
+        <a class="button button-dark button-small" href="/login">ورود / ثبت‌نام</a>
+      <% } %>
+    </div>
+  </div>
+</header>
+<% if (flash) { %><div class="container flash-wrap"><div class="flash flash-<%= flash.type %>" role="status"><%= flash.message %><button type="button" aria-label="بستن پیام" data-flash-close>×</button></div></div><% } %>
+<main>

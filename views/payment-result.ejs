@@ -1,0 +1,3 @@
+<%- include('partials/header', {title}) %>
+<section class="result-page section"><div class="container"><div class="payment-result-card"><div class="payment-result-icon <%= ok?'success':'failure' %>"><%= ok?'✓':'!' %></div><span class="section-kicker"><%= ok?'PAYMENT CONFIRMED':'PAYMENT STATUS' %></span><h1><%= title %></h1><p><%= message %></p><div class="hero-actions"><a class="button button-primary" href="/account">رفتن به حساب کاربری ←</a><a class="button button-outline" href="/shop">بازگشت به فروشگاه</a></div></div></div></section>
+<%- include('partials/footer') %>

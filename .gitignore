@@ -1,0 +1,13 @@
+node_modules/
+.env
+uploads/**
+!uploads/covers/.gitkeep
+!uploads/private/.gitkeep
+npm-debug.log*
+.DS_Store
+
+# Local secrets and development backups
+.env
+.env.*
+!.env.example
+*.before-dev-otp

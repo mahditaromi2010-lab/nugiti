@@ -1,0 +1,29 @@
+{
+  "name": "nogiti-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nogiti engineering tools, courses, AutoCAD plugins, articles and admin CMS",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "db:migrate": "node scripts/migrate.js",
+    "admin:create": "node scripts/create-admin.js",
+    "check": "node --check src/server.js && node --check public/js/main.js && node --check public/js/tools.js"
+  },
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.13.1"
+  }
+}
